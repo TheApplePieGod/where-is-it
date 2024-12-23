@@ -1,4 +1,3 @@
-use shellexpand;
 use std::{fmt::Debug, path::PathBuf};
 
 use super::Provider;

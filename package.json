@@ -1,13 +1,13 @@
 {
-  "package": "where-is-it",
-  "devDependencies": {
-    "@napi-rs/cli": "2.18.4"
-  },
-  "napi": {
-    "name": "where-is-it"
-  },
-  "scripts": {
-    "build": "napi build --release --features node-compile",
-    "build:debug": "napi build --features node-compile"
-  }
+    "package": "where-is-it",
+    "devDependencies": {
+        "@napi-rs/cli": "2.18.4"
+    },
+    "napi": {
+        "name": "where-is-it"
+    },
+    "scripts": {
+        "build": "napi build --release --features node-compile --platform build",
+        "build:debug": "napi build --features node-compile --platform build"
+    }
 }
