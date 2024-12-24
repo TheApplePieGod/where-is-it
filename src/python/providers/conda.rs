@@ -45,7 +45,11 @@ impl Provider for CondaProvider {
                             let path = entry.path();
                             let env = path.file_name().unwrap().to_str().unwrap();
                             if path.is_dir() {
-                                let bin = path.join("bin");
+                                let bin = if cfg!(windows) {
+                                    path.clone()
+                                } else {
+                                    path.join("bin")
+                                };
                                 let mut found = super::find_pythons_from_path(&bin, true);
                                 found.iter_mut()
                                     .for_each(|v| v.formatted_name = Some(format!("Conda '{}'", env)));
