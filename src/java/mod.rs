@@ -195,7 +195,7 @@ fn collate_jvms(os: &OperatingSystem, cfg: &Config) -> io::Result<Vec<Jvm>> {
     paths.push(path.unwrap().to_string());
 
     for path in paths {
-        for path in fs::read_dir(path).unwrap() {
+        for path in fs::read_dir(path)? {
             let path = path.unwrap().path();
             let metadata = fs::metadata(&path).unwrap();
             let link = fs::read_link(&path);
@@ -349,7 +349,7 @@ fn collate_jvms(os: &OperatingSystem, cfg: &Config) -> io::Result<Vec<Jvm>> {
     // Read from Custom JVM Location Paths
     if !cfg.paths.is_empty() {
         for path in &cfg.paths {
-            for path in fs::read_dir(path).unwrap() {
+            for path in fs::read_dir(path)? {
                 let jvm_path = path.unwrap().path();
                 let metadata = fs::metadata(&jvm_path).unwrap();
 
