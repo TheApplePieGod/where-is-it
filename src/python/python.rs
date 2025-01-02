@@ -12,16 +12,26 @@ use pep440_rs::Version;
 use crate::python::finder::MatchOptions;
 use crate::python::helpers::calculate_file_hash;
 
+#[cfg(target_os = "windows")]
+use std::os::windows::process::CommandExt;
+
+#[cfg(target_os = "windows")]
+const CREATE_NO_WINDOW: u32 = 0x08000000;
+
 static GET_VERSION_TIMEOUT: u64 = 5;
 
 fn run_python_script(cmd: &str, script: &str, timeout: Option<u64>) -> Result<String, io::Error> {
     use std::process::Command;
     let args = vec!["-EsSc", script];
-    let mut child = Command::new(cmd)
-        .args(args)
+    let mut command = Command::new(cmd);
+    command.args(args)
         .stdout(Stdio::piped())
-        .stderr(Stdio::null())
-        .spawn()?;
+        .stderr(Stdio::null());
+
+    #[cfg(target_os = "windows")]
+    command.creation_flags(CREATE_NO_WINDOW);
+
+    let mut child = command.spawn()?;
     match timeout {
         Some(duration) => match child.wait_timeout(Duration::from_secs(duration as u64))? {
             Some(status) => {
